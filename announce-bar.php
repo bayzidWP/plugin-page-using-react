@@ -23,6 +23,14 @@
  */
 
 
+
+ // https://developer.wordpress.org/news/2024/03/how-to-use-wordpress-react-components-for-plugin-pages/
+ // https://wordpress.github.io/gutenberg/?path=/docs/components-paletteedit--docs
+
+
+
+ 
+
 // If this file is called directly, abort.
 if (!defined('ABSPATH')) exit;
 
