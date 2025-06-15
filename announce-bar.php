@@ -23,26 +23,23 @@
  */
 
 
-
- // https://developer.wordpress.org/news/2024/03/how-to-use-wordpress-react-components-for-plugin-pages/
- // https://wordpress.github.io/gutenberg/?path=/docs/components-paletteedit--docs
-
-
-
- 
-
 // If this file is called directly, abort.
-if (!defined('ABSPATH')) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+require_once plugin_dir_path( __FILE__ ) . 'src/Settings.php';
+
 
 
 function unadorned_announcement_bar_settings_page() {
-    add_options_page(
-        __( 'Unadorned Announcement Bar', 'unadorned-announcement-bar' ),
-        __( 'Unadorned Announcement Bar', 'unadorned-announcement-bar' ),
-        'manage_options',
-        'unadorned-announcement-bar',
-        'unadorned_announcement_bar_settings_page_html'
-    );
+	add_options_page(
+		__( 'Unadorned Announcement Bar', 'unadorned-announcement-bar' ),
+		__( 'Unadorned Announcement Bar', 'unadorned-announcement-bar' ),
+		'manage_options',
+		'unadorned-announcement-bar',
+		'unadorned_announcement_bar_settings_page_html'
+	);
 }
 
 add_action( 'admin_menu', 'unadorned_announcement_bar_settings_page' );
@@ -57,37 +54,40 @@ add_action( 'admin_menu', 'unadorned_announcement_bar_settings_page' );
  * @since 1.0.0
  */
 function unadorned_announcement_bar_settings_page_html() {
-    printf(
-        '<div class="wrap" id="unadorned-announcement-bar-settings">%s</div>',
-        esc_html__( 'Loading…', 'unadorned-announcement-bar' )
-    );
+	printf(
+		'<div class="wrap" id="unadorned-announcement-bar-settings">%s</div>',
+		esc_html__( 'Loading…', 'unadorned-announcement-bar' )
+	);
 }
 
 
-
-
+/** * Enqueue the necessary scripts and styles for the Unadorned Announcement Bar settings page.
+ *
+ * This function checks if the current admin page is the settings page for the plugin,
+ */
 function unadorned_announcement_bar_settings_page_enqueue_style_script( $admin_page ) {
-    if ( 'settings_page_unadorned-announcement-bar' !== $admin_page ) {
-        return;
-    }
+	if ( 'settings_page_unadorned-announcement-bar' !== $admin_page ) {
+		return;
+	}
 
-    $asset_file = plugin_dir_path( __FILE__ ) . 'build/index.asset.php';
+	$asset_file = plugin_dir_path( __FILE__ ) . 'build/index.asset.php';
+	if ( ! file_exists( $asset_file ) ) {
+		return;
+	}
 
-    if ( ! file_exists( $asset_file ) ) {
-        return;
-    }
+	$asset = include $asset_file;
+	wp_enqueue_script(
+		'unadorned-announcement-bar-script',
+		plugins_url( 'build/index.js', __FILE__ ),
+		$asset['dependencies'],
+		$asset['version'],
+		array(
+			'in_footer' => true,
+		)
+	);
 
-    $asset = include $asset_file;
-
-    wp_enqueue_script(
-        'unadorned-announcement-bar-script',
-        plugins_url( 'build/index.js', __FILE__ ),
-        $asset['dependencies'],
-        $asset['version'],
-        array(
-            'in_footer' => true,
-        )
-    );
+	// Enqueue the WordPress components style.
+	wp_enqueue_style( 'wp-components' );
 }
 
 add_action( 'admin_enqueue_scripts', 'unadorned_announcement_bar_settings_page_enqueue_style_script' );
