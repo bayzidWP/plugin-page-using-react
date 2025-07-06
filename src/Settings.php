@@ -7,21 +7,30 @@
 function unadorned_announcement_bar_settings() {
 	// Register the settings for the Unadorned Announcement Bar plugin.
 	$defaults = array(
-		'message' => __( 'Hello World!', 'unadorned-announcement-bar' ),
-		'display' => true,
-		'size'    => 'medium',
+		'message'   => __( 'Hello World!', 'unadorned-announcement-bar' ),
+		'display'   => true,
+		'alignment' => 'left',
+		'size'      => 'medium',
 	);
 
 	$schema = array(
 		'type'       => 'object',
 		'properties' => array(
-			'message' => array(
+			'message'   => array(
 				'type' => 'string',
 			),
-			'display' => array(
+			'display'   => array(
 				'type' => 'boolean',
 			),
-			'size'    => array(
+			'alignment' => array(
+				'type' => 'string',
+				'enum' => array(
+					'left',
+					'center',
+					'right',
+				),
+			),
+			'size'      => array(
 				'type' => 'string',
 				'enum' => array(
 					'small',

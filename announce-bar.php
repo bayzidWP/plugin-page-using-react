@@ -22,13 +22,12 @@
  * Domain Path:       /Languages
  */
 
-
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require_once plugin_dir_path( __FILE__ ) . 'src/Settings.php';
+require_once plugin_dir_path( __FILE__ ) . 'src/settings.php';
 
 
 
@@ -76,6 +75,24 @@ function unadorned_announcement_bar_settings_page_enqueue_style_script( $admin_p
 	}
 
 	$asset = include $asset_file;
+	// Check if the asset file is valid and contains the necessary keys.
+	// If not, return early to avoid errors.
+	if ( ! is_array( $asset ) || ! isset( $asset['dependencies'], $asset['version'] ) ) {
+		return;
+	}
+
+	wp_enqueue_style(
+		'unadorned-announcement-bar-style',
+		plugins_url( 'build/index.css', __FILE__ ),
+		array_filter(
+			$asset['dependencies'],
+			function ( $style ) {
+				return wp_style_is( $style, 'registered' );
+			}
+		),
+		$asset['version'],
+	);
+
 	wp_enqueue_script(
 		'unadorned-announcement-bar-script',
 		plugins_url( 'build/index.js', __FILE__ ),
@@ -85,9 +102,38 @@ function unadorned_announcement_bar_settings_page_enqueue_style_script( $admin_p
 			'in_footer' => true,
 		)
 	);
-
-	// Enqueue the WordPress components style.
-	wp_enqueue_style( 'wp-components' );
 }
 
 add_action( 'admin_enqueue_scripts', 'unadorned_announcement_bar_settings_page_enqueue_style_script' );
+
+/**
+ * Undocumented function
+ *
+ * @return void
+ */
+function unadorned_announcement_bar_front_page() {
+	$options = get_option( 'unadorned_announcement_bar' );
+
+	$css = WP_Style_Engine::compile_css(
+		array(
+			'background' => 'var(--wp--preset--color--vivid-purple, #9b51e0)',
+			'color'      => 'var(--wp--preset--color--white, #ffffff)',
+			'padding'    => 'var(--wp--preset--spacing--20, 1.5rem)',
+			'text-align' => $options['alignment'],
+			'font-size'  => $options['size'],
+		),
+		''
+	);
+
+	if ( ! $options['display'] ) {
+		return;
+	}
+
+	printf(
+		'<div style="%s">%s</div>',
+		esc_attr( $css ),
+		esc_html( $options['message'] )
+	);
+}
+
+add_action( 'wp_body_open', 'unadorned_announcement_bar_front_page' );

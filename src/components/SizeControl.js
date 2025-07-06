@@ -29,13 +29,9 @@ const SizeControl = ({ value, onChange }) => {
             ]}
             value={value}
             onChange={onChange}
-            ///disableCustomFontSizes={true}
+            disableCustomFontSizes={true}
             __nextHasNoMarginBottom
         />
     );
 };
 export default SizeControl;
-
-// This component is used to control the font size of the announcement bar.
-// It uses the FontSizePicker component from WordPress components.
-// The value and onChange props are used to manage the state of the font size.
