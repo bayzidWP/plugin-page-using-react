@@ -28,9 +28,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once plugin_dir_path( __FILE__ ) . 'src/settings.php';
-
-
-
+/**
+ * Registers the block using metadata loaded from the `blocks.json` file.
+ *
+ */
 function unadorned_announcement_bar_settings_page() {
 	add_options_page(
 		__( 'Unadorned Announcement Bar', 'unadorned-announcement-bar' ),
