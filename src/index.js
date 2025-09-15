@@ -10,6 +10,7 @@ import DisplayControl from './components/DisplayControl.js';
 import SizeControl from './components/SizeControl.js';
 import TextAlignment from './components/TextAlignmentControl.js';
 import ColorControl from './components/ColorControl';
+import PaddingControlAdvanced from './components/paddingControl.js';
 
 import SaveButton from './components/SaveButton.js';
 import SettingsTitle from './components/SettingsTitle.js';
@@ -48,11 +49,16 @@ const useSettings = () => {
     const [display, setDisplay] = useState(true);
     const [size, setSize] = useState('medium');
     const [alignment, setAlignment] = useState('left');
-    const [controlledColors, setControlledColors] = useState();
-
+    const [controlledColors, setControlledColors] = useState('#1a4548');
+    const [textColor, setTextColor] = useState('#ffffff');
+    const [padding, setPadding] = useState({
+        top: 22,
+        right: 22,
+        bottom: 22,
+        left: 22
+    });
     // This effect is used to show a success notice when the settings are saved.
     const { createSuccessNotice } = useDispatch(noticesStore);
-
 
     // This hook is used to manage the settings state.
     useEffect(() => {
@@ -62,6 +68,16 @@ const useSettings = () => {
             setDisplay(settings.unadorned_announcement_bar.display);
             setAlignment(settings.unadorned_announcement_bar.alignment);
             setSize(settings.unadorned_announcement_bar.size);
+            setControlledColors(settings.unadorned_announcement_bar.bg_color);
+            setTextColor(settings.unadorned_announcement_bar.text_color);
+            const savedPadding = settings.unadorned_announcement_bar.banner_padding;
+            setPadding(savedPadding ?? {
+                top: 22,
+                right: 22,
+                bottom: 22,
+                left: 22
+            });
+
         });
     }, [])
 
@@ -76,6 +92,9 @@ const useSettings = () => {
                     display,
                     alignment,
                     size,
+                    bg_color: controlledColors,
+                    text_color: textColor,
+                    banner_padding: padding,
                 },
             },
         }).then(() => {
@@ -95,6 +114,10 @@ const useSettings = () => {
         setSize,
         controlledColors,
         setControlledColors,
+        textColor,
+        setTextColor,
+        padding,
+        setPadding,
         // Function to save the settings.
         saveSettings,
     };
@@ -118,6 +141,10 @@ const SettingsPage = () => {
         setAlignment,
         controlledColors,
         setControlledColors,
+        textColor,
+        setTextColor,
+        padding,
+        setPadding,
         // Function to save the settings.
         saveSettings,
     } = useSettings();
@@ -148,8 +175,38 @@ const SettingsPage = () => {
                     </PanelRow>
                     <PanelRow>
                         <ColorControl
+                            label="Choose Background Color"
+                            colors={[
+                                { color: '#1a73e8', name: 'Google Blue', slug: 'google-blue' },
+                                { color: '#ff5a5f', name: 'Airbnb Coral', slug: 'airbnb-coral' },
+                                { color: '#ff9900', name: 'Amazon Orange', slug: 'amazon-orange' },
+                                { color: '#2ecc71', name: 'Spotify Green', slug: 'spotify-green' },
+                                { color: '#111827', name: 'Tailwind Slate', slug: 'tailwind-slate' },
+                            ]}
                             value={controlledColors}
-                            onChange={(value) => setControlledColors(value)}
+                            onChange={setControlledColors}
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <ColorControl
+                            label="Choose Text Color"
+                            colors={[
+                                { color: '#ffffff', name: 'White', slug: 'white' },
+                                { color: '#000000', name: 'Black', slug: 'black' },
+                                { color: '#facc15', name: 'Yellow', slug: 'yellow' },
+                            ]}
+                            value={textColor}
+                            onChange={setTextColor}
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <PaddingControlAdvanced
+                            label="Padding"
+                            value={padding}
+                            onChange={setPadding}
+                            min={0}
+                            max={100}
+                            unit="px"
                         />
                     </PanelRow>
                 </PanelBody>

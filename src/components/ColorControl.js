@@ -1,16 +1,23 @@
-import { ColorPalette } from '@wordpress/components';
+import { ColorPalette, BaseControl } from '@wordpress/components';
 
-const ColorControl = ({ value, onChange }) => {
+/**
+ * Reusable color picker control.
+ *
+ * @param {Object} props
+ * @param {string} props.label - The label/title for the control.
+ * @param {Array} props.colors - Array of color presets { color, name, slug }.
+ * @param {string} props.value - Currently selected color.
+ * @param {Function} props.onChange - Callback when color is changed.
+ */
+const ColorControl = ({ label, colors, value, onChange }) => {
     return (
-        <ColorPalette
-            colors={[
-                { color: '#1a4548', name: 'Primary', slug: 'primary' },
-                { color: '#0000ff', name: 'Secondary', slug: 'secondary' },
-                { color: '#fb326b', name: 'Tertiary', slug: 'tertiary' }
-            ]}
-            value={value}
-            onChange={onChange}
-        />
+        <BaseControl label={label}>
+            <ColorPalette
+                colors={colors}
+                value={value}
+                onChange={onChange}
+            />
+        </BaseControl>
     );
 };
 

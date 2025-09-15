@@ -30,7 +30,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once plugin_dir_path( __FILE__ ) . 'src/settings.php';
 /**
  * Registers the block using metadata loaded from the `blocks.json` file.
- *
  */
 function unadorned_announcement_bar_settings_page() {
 	add_options_page(
@@ -114,12 +113,25 @@ add_action( 'admin_enqueue_scripts', 'unadorned_announcement_bar_settings_page_e
  */
 function unadorned_announcement_bar_front_page() {
 	$options = get_option( 'unadorned_announcement_bar' );
+	$padding = isset( $options['banner_padding'] ) ? $options['banner_padding'] : array(
+		'top'    => 20,
+		'right'  => 20,
+		'bottom' => 20,
+		'left'   => 20,
+	);
 
-	$css = WP_Style_Engine::compile_css(
+	$style   = sprintf(
+		'%dpx %dpx %dpx %dpx',
+		intval( $padding['top'] ),
+		intval( $padding['right'] ),
+		intval( $padding['bottom'] ),
+		intval( $padding['left'] )
+	);
+	$css   = WP_Style_Engine::compile_css(
 		array(
-			'background' => 'var(--wp--preset--color--vivid-purple, #9b51e0)',
-			'color'      => 'var(--wp--preset--color--white, #ffffff)',
-			'padding'    => 'var(--wp--preset--spacing--20, 1.5rem)',
+			'background' => $options['bg_color'],
+			'color'      => $options['text_color'],
+			'padding'    => $style,
 			'text-align' => $options['alignment'],
 			'font-size'  => $options['size'],
 		),

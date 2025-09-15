@@ -7,22 +7,30 @@
 function unadorned_announcement_bar_settings() {
 	// Register the settings for the Unadorned Announcement Bar plugin.
 	$defaults = array(
-		'message'   => __( 'Hello World!', 'unadorned-announcement-bar' ),
-		'display'   => true,
-		'alignment' => 'left',
-		'size'      => 'medium',
+		'message'        => __( 'Hello World!', 'unadorned-announcement-bar' ),
+		'display'        => true,
+		'alignment'      => 'left',
+		'size'           => 'medium',
+		'bg_color'       => '#1a4548',
+		'text_color'     => '#ffffff',
+		'banner_padding' => array(
+			'top'    => 22,
+			'right'  => 22,
+			'bottom' => 22,
+			'left'   => 22,
+		),
 	);
 
 	$schema = array(
 		'type'       => 'object',
 		'properties' => array(
-			'message'   => array(
+			'message'        => array(
 				'type' => 'string',
 			),
-			'display'   => array(
+			'display'        => array(
 				'type' => 'boolean',
 			),
-			'alignment' => array(
+			'alignment'      => array(
 				'type' => 'string',
 				'enum' => array(
 					'left',
@@ -30,13 +38,40 @@ function unadorned_announcement_bar_settings() {
 					'right',
 				),
 			),
-			'size'      => array(
+			'size'           => array(
 				'type' => 'string',
 				'enum' => array(
 					'small',
 					'medium',
 					'large',
 					'x-large',
+				),
+			),
+			'bg_color'       => array( 'type' => 'string' ),
+			'text_color'     => array( 'type' => 'string' ),
+			'banner_padding' => array(
+				'type'       => 'object',
+				'properties' => array(
+					'top'    => array(
+						'type'    => 'integer',
+						'minimum' => 0,
+						'maximum' => 100,
+					),
+					'right'  => array(
+						'type'    => 'integer',
+						'minimum' => 0,
+						'maximum' => 100,
+					),
+					'bottom' => array(
+						'type'    => 'integer',
+						'minimum' => 0,
+						'maximum' => 100,
+					),
+					'left'   => array(
+						'type'    => 'integer',
+						'minimum' => 0,
+						'maximum' => 100,
+					),
 				),
 			),
 		),
