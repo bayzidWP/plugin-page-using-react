@@ -4,13 +4,13 @@
  *
  * Sets up the default values and schema for the settings.
  */
-function unadorned_announcement_bar_settings() {
+function announcement_bar_settings() {
 	// Register the settings for the Unadorned Announcement Bar plugin.
 	$defaults = array(
-		'message'        => __( 'Hello World!', 'unadorned-announcement-bar' ),
 		'display'        => true,
+		'message'        => __( 'Hello, WordPress!', 'unadorned-announcement-bar' ),
 		'alignment'      => 'left',
-		'size'           => 'medium',
+		'size'           => 'x-large',
 		'bg_color'       => '#1a4548',
 		'text_color'     => '#ffffff',
 		'banner_padding' => array(
@@ -79,7 +79,7 @@ function unadorned_announcement_bar_settings() {
 
 	register_setting(
 		'options',
-		'unadorned_announcement_bar',
+		'announcement_bar',
 		array(
 			'type'         => 'object',
 			'default'      => $defaults,
@@ -90,4 +90,4 @@ function unadorned_announcement_bar_settings() {
 	);
 }
 
-add_action( 'init', 'unadorned_announcement_bar_settings' );
+add_action( 'init', 'announcement_bar_settings' );

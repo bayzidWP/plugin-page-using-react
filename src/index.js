@@ -45,9 +45,9 @@ const Notices = () => {
 * @returns {Object} An object containing the current settings and functions to update them.
  */
 const useSettings = () => {
-    const [message, setMessage] = useState('Hello, World!');
+    const [message, setMessage] = useState('Hello, WordPress!');
     const [display, setDisplay] = useState(true);
-    const [size, setSize] = useState('medium');
+    const [size, setSize] = useState('x-large');
     const [alignment, setAlignment] = useState('left');
     const [controlledColors, setControlledColors] = useState('#1a4548');
     const [textColor, setTextColor] = useState('#ffffff');
@@ -64,13 +64,13 @@ const useSettings = () => {
     useEffect(() => {
         // Fetch initial settings from the server.
         apiFetch({ path: '/wp/v2/settings' }).then((settings) => {
-            setMessage(settings.unadorned_announcement_bar.message);
-            setDisplay(settings.unadorned_announcement_bar.display);
-            setAlignment(settings.unadorned_announcement_bar.alignment);
-            setSize(settings.unadorned_announcement_bar.size);
-            setControlledColors(settings.unadorned_announcement_bar.bg_color);
-            setTextColor(settings.unadorned_announcement_bar.text_color);
-            const savedPadding = settings.unadorned_announcement_bar.banner_padding;
+            setMessage(settings.announcement_bar.message);
+            setDisplay(settings.announcement_bar.display);
+            setAlignment(settings.announcement_bar.alignment);
+            setSize(settings.announcement_bar.size);
+            setControlledColors(settings.announcement_bar.bg_color);
+            setTextColor(settings.announcement_bar.text_color);
+            const savedPadding = settings.announcement_bar.banner_padding;
             setPadding(savedPadding ?? {
                 top: 22,
                 right: 22,
@@ -87,7 +87,7 @@ const useSettings = () => {
             path: '/wp/v2/settings',
             method: 'POST',
             data: {
-                unadorned_announcement_bar: {
+                announcement_bar: {
                     message,
                     display,
                     alignment,
@@ -156,15 +156,15 @@ const SettingsPage = () => {
             <Panel>
                 <PanelBody>
                     <PanelRow>
-                        <MessageControl
-                            value={message}
-                            onChange={(value) => setMessage(value)}
-                        />
-                    </PanelRow>
-                    <PanelRow>
                         <DisplayControl
                             value={display}
                             onChange={(value) => setDisplay(value)}
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <MessageControl
+                            value={message}
+                            onChange={(value) => setMessage(value)}
                         />
                     </PanelRow>
                     <PanelRow>

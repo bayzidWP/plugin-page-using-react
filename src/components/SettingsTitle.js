@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
 const SettingsTitle = () => {
     return (
         <Heading level={1}>
-            {__('Unadorned Announcement Bar', 'unadorned-announcement-bar')}
+            {__('Announcement Bar Settings', 'unadorned-announcement-bar')}
         </Heading>
     );
 };

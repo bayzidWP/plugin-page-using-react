@@ -31,17 +31,17 @@ require_once plugin_dir_path( __FILE__ ) . 'src/settings.php';
 /**
  * Registers the block using metadata loaded from the `blocks.json` file.
  */
-function unadorned_announcement_bar_settings_page() {
+function announcement_bar_settings_page() {
 	add_options_page(
-		__( 'Unadorned Announcement Bar', 'unadorned-announcement-bar' ),
-		__( 'Unadorned Announcement Bar', 'unadorned-announcement-bar' ),
+		__( 'Announcement Bar Settings', 'unadorned-announcement-bar' ),
+		__( 'Announcement Bar Settings', 'unadorned-announcement-bar' ),
 		'manage_options',
-		'unadorned-announcement-bar',
-		'unadorned_announcement_bar_settings_page_html'
+		'announcement-bar',
+		'bar_settings_page_html'
 	);
 }
 
-add_action( 'admin_menu', 'unadorned_announcement_bar_settings_page' );
+add_action( 'admin_menu', 'announcement_bar_settings_page' );
 
 
 /**
@@ -52,7 +52,7 @@ add_action( 'admin_menu', 'unadorned_announcement_bar_settings_page' );
  *
  * @since 1.0.0
  */
-function unadorned_announcement_bar_settings_page_html() {
+function bar_settings_page_html() {
 	printf(
 		'<div class="wrap" id="unadorned-announcement-bar-settings">%s</div>',
 		esc_html__( 'Loading…', 'unadorned-announcement-bar' )
@@ -60,12 +60,12 @@ function unadorned_announcement_bar_settings_page_html() {
 }
 
 
-/** * Enqueue the necessary scripts and styles for the Unadorned Announcement Bar settings page.
- *
+/*
  * This function checks if the current admin page is the settings page for the plugin,
+ * @param $admin_page string The current admin page slug.
  */
-function unadorned_announcement_bar_settings_page_enqueue_style_script( $admin_page ) {
-	if ( 'settings_page_unadorned-announcement-bar' !== $admin_page ) {
+function announcement_bar_settings_page_enqueue_style_script( $admin_page ) {
+	if ( 'settings_page_announcement-bar' !== $admin_page ) {
 		return;
 	}
 
@@ -104,15 +104,15 @@ function unadorned_announcement_bar_settings_page_enqueue_style_script( $admin_p
 	);
 }
 
-add_action( 'admin_enqueue_scripts', 'unadorned_announcement_bar_settings_page_enqueue_style_script' );
+add_action( 'admin_enqueue_scripts', 'announcement_bar_settings_page_enqueue_style_script' );
 
 /**
  * Undocumented function
  *
  * @return void
  */
-function unadorned_announcement_bar_front_page() {
-	$options = get_option( 'unadorned_announcement_bar' );
+function announcement_bar_front_page() {
+	$options = get_option( 'announcement_bar' );
 	$padding = isset( $options['banner_padding'] ) ? $options['banner_padding'] : array(
 		'top'    => 20,
 		'right'  => 20,
@@ -149,4 +149,4 @@ function unadorned_announcement_bar_front_page() {
 	);
 }
 
-add_action( 'wp_body_open', 'unadorned_announcement_bar_front_page' );
+add_action( 'wp_body_open', 'announcement_bar_front_page' );
